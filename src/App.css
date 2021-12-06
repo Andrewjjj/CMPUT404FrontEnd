@@ -1,0 +1,231 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/* .background{
+  background-color: rgb(21,32,43);
+  height: 100vh;
+  width: 100%; 
+  
+} */
+
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+
+
+.container {
+  max-width: 1050px;
+  margin: 10px auto;
+  min-height: 700px;
+  
+  background-color: rgb(21, 32, 43);
+  padding: 10px;
+  align-items: left;
+  text-align: left;
+  overflow-y: auto;
+  height: 500px;
+  
+}
+
+
+
+#mainscreen{
+
+  margin-top: 0 !important;
+  margin-bottom: 20px !important;
+}
+
+.Buttons{
+
+  background-color: #FF7A00;
+  color: rgb(255, 255, 255);
+  
+}
+
+.Buttons:hover{
+  background-color: #d46700;
+}
+
+.container::-webkit-scrollbar
+{
+  width: 10px;
+}
+
+.container::-webkit-scrollbar-track
+{
+  background-color: transparent;
+}
+
+.container::-webkit-scrollbar-thumb
+{
+  background-color: #FF7A00;
+  border-radius: 5px;
+  
+}
+
+.friend {
+  background: #1E2F41;
+  border-radius: 5px;
+  margin: 5px;
+  max-height: 150px;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 2fr 1fr
+
+}
+
+.headerc {
+  text-align: center;
+  margin-bottom: 10px;
+  background-color:#ff7a00 ;
+  border-radius: 5px;
+  color: white;
+  display:flexbox;
+
+}
+.friendDivRight
+{
+  padding: 20px 0px 20px 0px;
+  color: white;
+  
+}
+
+.friendDivLeft
+{
+  padding: 40px 0px 20px 0px;
+  
+}
+
+.friendButton
+{
+  background-color:#1E2F41 ;
+  color: white;
+  border-radius: 5px;
+}
+
+.friendDivButton
+{
+  background-color:#ff7a00 ;
+  color: white;
+  border-radius: 5px;
+}
+
+.profileImage
+{
+  width: 50px;
+  height:auto;
+  
+}
+
+.containerProfile{
+  width: 300px;
+  border-radius: 10px;
+  min-height: 700px;
+  background-color: #263b52;
+  padding: 10px;
+  align-items: center;
+  text-align: center;
+  overflow-y: auto;
+  height: 725px;
+  margin-top: 15px;
+}
+
+.headerProfile
+{
+  background-color:#FF7A00;
+  text-align: center;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  color: white;
+
+}
+
+.profileDiv
+{
+  margin: 50px;
+}
+
+.profileDivButton
+{
+  background-color:#ff7a00 ;
+  color: white;
+  height: 50px;
+  width: 100px;
+  border-radius:5px;
+}
+
+.author {
+  background: #1E2F41;
+  border-radius: 10px;
+  margin: 5px;
+  height: 100%;
+  
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 90px;
+  padding-bottom: 50px;
+  cursor: pointer;
+  
+  
+  color: white;
+}
+
+.bodyDiv
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+}
+
+.containerFeed{
+  width: 1215px;
+  border-radius: 10px;
+  min-height: 700px;
+  background-color: #263b52;
+  padding: 10px;
+  align-items: center;
+  text-align: left;
+  overflow-y: auto;
+  height: 725px;
+  margin-top: 15px;
+  
+}
+
+.PostList
+{padding: '20px';margin:"5px"; display:"grid"; gap: 10px;}
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
