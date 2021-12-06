@@ -29,7 +29,17 @@ export const PostFeed = (props) => {
     const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]); 
+
+    // const [foreignPosts, setForeignPosts] = useState([]);
+    // const [foreignComments, setForeignComments] = useState([]);
+    // const [foreignLikes, setForeignLikes] = useState([]); 
+
+    // const [hostURL, setHostURL] = useState("")
+    // const [username, setUsername] = useState("")
+    // const [password, setPassword] = useState("")
+
     const [commentInputField, setCommentInputField] = useState({});
+    const [commentMarkdownField, setCommentMarkdownField] = useState({});
     const [editBodyField, setEditBodyField] = useState({});
     const [editTitleField, setEditTitleField] = useState({});
     const [editPost, setEditPost] = useState({});
@@ -38,6 +48,8 @@ export const PostFeed = (props) => {
     const restHost = useStoreState((state) => state.restHost)
     //const feedAuthor = props.author;
     const [editingPostID, setEditingPostID] = useState("")
+
+
     const [showModal, setShowModal] = useState(false)
     useEffect(() => {
         fetchPosts();
@@ -45,28 +57,29 @@ export const PostFeed = (props) => {
 
     const fetchPosts = async () => {
         try{
+            // console.lo
             let response = await axios.get(`${restHost}/author/${authorInfo.id}/posts`)
             // let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
-            console.log("Posts: ", posts)
+            // console.log("Posts: ", posts)
             // posts = await posts.map(async post => {
             //     if(post.contentType != "image/png;base64" || post.contentType != "image/png;base64") return post;
             //     // await axios.get("")
             // })
-            console.log("POST", posts)
+            // console.log("POST", posts)
             setPosts(posts);
             fetchComments(posts);
             fetchLikes(posts);
         }
         catch(err){
             console.log(err)
-            alert(`Post error: ${err}`)
+            // alert(`Post error: ${err}`)
         }
     }
 
     const fetchLikes = async (posts) => {
         let newLikes = []
-        
+        console.log("PostS: ", posts)
         for(var i = 0; i < posts.length; i++){
             try{
                 let likesResponse = await axios.get(`${posts[i].id}/likes`)
@@ -74,17 +87,18 @@ export const PostFeed = (props) => {
             }
             catch(err){
                 console.log(err)
-                alert(`Likes error: ${err} with url ${posts[i].id}/likes`)
+                // alert(`Likes error: ${err} with url ${posts[i].id}/likes`)
             }
         }
-        console.log("Post Likes", newLikes)
+        // console.log("Post Likes", newLikes)
         //alert(toString(comments))
         setLikes(newLikes)
+        console.log(newLikes)
         //setLikes([[1, 2],[1]])
     }
 
     const fetchComments = async (posts) => {
-        console.log(posts)
+        // console.log(posts)
         let newComments = []
         
         for(var i = 0; i < posts.length; i++){
@@ -94,7 +108,7 @@ export const PostFeed = (props) => {
             }
             catch(err){
                 console.log(err)
-                alert(`Comment error: ${err}`)
+                // alert(`Comment error: ${err}`)
             }
         }
         console.log("Post Comments", newComments)
@@ -103,7 +117,7 @@ export const PostFeed = (props) => {
     }
 
     const commentChangeHandler = (postID, comment) => {
-        console.log(postID, comment)
+        // console.log(postID, comment)
         setCommentInputField({
             ...commentInputField,
             [postID]: comment,
@@ -111,8 +125,17 @@ export const PostFeed = (props) => {
         console.log(commentInputField)
     }
 
+    const commentMarkdownHandler = (postID, value) => {
+        //console.log(postID, value)
+        setCommentMarkdownField({
+            ...commentMarkdownField,
+            [postID]: value,
+        })
+        console.log(commentMarkdownField)
+    } 
+
     const editTitleHandler = (postID, edit) => {
-        console.log(postID, edit)
+        // console.log(postID, edit)
         setEditTitleField({
             ...editTitleField,
             [postID]: edit,
@@ -121,7 +144,7 @@ export const PostFeed = (props) => {
     }
 
     const editBodyHandler = (postID, edit) => {
-        console.log(postID, edit)
+        // console.log(postID, edit)
         setEditBodyField({
             ...editBodyField,
             [postID]: edit,
@@ -133,25 +156,23 @@ export const PostFeed = (props) => {
 
         //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
         let success = true;
-        let friends = await axios.get(`${restHost}/author/${authorInfo.id}/followers`);
-        for(var i = 0; i < friends.length; i++){
+        let friendsResponse = await axios.get(`${restHost}/author/${authorInfo.id}/friends`);
+        let friends = friendsResponse.data;
+        console.log("friends", friends)
+
+        await Promise.all(friends.map(async friend => {
             try{
-                axios.post(`${friends[i].id}/inbox`, post).then(res => {
-                    console.log(`Successfully shared with ${friends[i].name}`)
+                await axios.post(`${friend.id}/inbox`, post).then(() => {
+                    console.log(`Successfully shared with ${friend.displayName}`)
                 })
             }
             catch(err){
                 success = false
                 console.log(err)
-                alert(`Share error: ${err}`)
+                // alert(`Share error: ${err}`)
             }
-        }
-        if(friends.length < 1){
-            success = false
-        }
-        if(success == true){
-            alert('Shared successfully')
-        }
+        }))
+        alert("successfully shared")
     }
 
     const editPostHandler = (post) => {
@@ -191,7 +212,7 @@ export const PostFeed = (props) => {
         }
         catch(err){
             console.log(err)
-            alert(`Editing error: ${err}`)
+            // alert(`Editing error: ${err}`)
         }
         //fetchPosts()
     }
@@ -206,13 +227,13 @@ export const PostFeed = (props) => {
         try{
             let response = await axios.delete(post.id, post).then(res => {
                 alert("Successful deletion")
-            })
+        })
             fetchPosts();
 
         }
         catch(err){
             console.log(err)
-            alert(`Deletion error: ${err}`)
+            // alert(`Deletion error: ${err}`)
         }
     }
 
@@ -221,6 +242,11 @@ export const PostFeed = (props) => {
         let newComment = commentInputField[postID];
         let currentDate = new Date();
         let url = `${postID}/comments`
+        let useMarkdown = commentMarkdownField[postID];
+        let contentType = "text/plain"
+        if(useMarkdown === true){
+            contentType = "text/markdown"
+        }
         currentDate = currentDate.toString();
         console.log(newComment)
         try{
@@ -230,7 +256,7 @@ export const PostFeed = (props) => {
                     publishedTime: currentDate, //TODO: ADD MORE FIELDS
                     authorID: authorInfo.id,
                     content: commentInputField[postID],
-                    contentType: "text/plain", //TODO: ALLOW TEXT/MARKDOWN
+                    contentType: contentType, //TODO: ALLOW TEXT/MARKDOWN
                 }
                 // id: "1234",
                 //published: currentDate
@@ -240,7 +266,7 @@ export const PostFeed = (props) => {
         }
         catch(err){
             console.log(err)
-            alert(err)
+            // alert(err)
             //alert(newComment)
         }
         fetchPosts();
@@ -256,13 +282,13 @@ export const PostFeed = (props) => {
             })
             .then(res => {
                 alert("success")
+                fetchPosts();
             })
         } catch(err) {
             console.log(err)
-            alert("Like Error:" + err)
+            // alert("Like Error:" + err)
             //alert(url)
         }
-        fetchPosts();
     }
 
 
@@ -324,15 +350,77 @@ export const PostFeed = (props) => {
     //     }
     // }   
 
+    // const fetchForeignPosts = async () => {
+    //     try{
+    //         let token = btoa(`${username}:${password}`)
+    //         let response = await axios.get(`${hostURL}`, {
+    //             headers: {
+    //                 "Authorization": `Basic ${token}`
+    //             }
+    //         })
+    //         console.log("response", response.data)
+    //         let posts = response.data.items
+    //         setForeignPosts(posts)
+    //         fetchComments(posts);
+    //         fetchLikes(posts);
+
+    //     }
+    //     catch(err){
+    //         console.log(err)
+    //         alert(err)
+    //     }
+    // }
+
+
+    // const fetchForeignLikes = async (posts) => {
+    //     let newLikes = []
+    //     console.log("PostS: ", posts)
+    //     for(var i = 0; i < posts.length; i++){
+    //         try{
+    //             let likesResponse = await axios.get(`${posts[i].id}/likes`)
+    //             newLikes[i] = likesResponse.data;
+    //         }
+    //         catch(err){
+    //             console.log(err)
+    //             // alert(`Likes error: ${err} with url ${posts[i].id}/likes`)
+    //         }
+    //     }
+    //     // console.log("Post Likes", newLikes)
+    //     //alert(toString(comments))
+    //     setForeignLikes(newLikes)
+    //     //setLikes([[1, 2],[1]])
+    // }
+
+    // const fetchForeignComments = async (posts) => {
+    //     // console.log(posts)
+    //     let newComments = []
+        
+    //     for(var i = 0; i < posts.length; i++){
+    //         try{
+    //             let commentsResponse = await axios.get(`${posts[i].id}/comments`)
+    //             newComments[i] = commentsResponse.data;
+    //         }
+    //         catch(err){
+    //             console.log(err)
+    //             // alert(`Comment error: ${err}`)
+    //         }
+    //     }
+    //     console.log("Post Comments", newComments)
+    //     //alert(toString(comments))
+    //     setForeignComments(newComments)
+    // }
+
 
     return (
-        <div id={PostFeed}>
+        <div style={{backgroundColor: "rgb(21,32,43)"}} id={PostFeed}>
             <CreatePostModal isVisible={showModal} setVisible={setShowModal} refresh={fetchPosts} submitPostHandler={createNewPostHandler} ></CreatePostModal>
 
-            <div>
-                This is a Post Screen!
+
+            <div style={{display: "flex", justifyContent: "center", flexDirection: 'column'}}>
+                <Button className="CreativeButton" onClick={() => setShowModal(true)}>Create New Post</Button>
             </div>
-            <Button onClick={() => setShowModal(true)}>Create New Post</Button>
+            
+
             {posts.map((post, i) => 
             <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
@@ -347,7 +435,7 @@ export const PostFeed = (props) => {
                 {/* React Section */}
                 <ReactionSection post={post} likes={likes[i]} clickHandler={reactionClickHandler} shareHandler={sharePostHandler}></ReactionSection>
                 {/* Comment Section */}
-                <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler}></CommentSection>
+                <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler} checkHandler={commentMarkdownHandler}></CommentSection>
             </div>
             )}
         </div>

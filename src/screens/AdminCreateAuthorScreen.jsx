@@ -5,7 +5,7 @@ import {Button, Input, Form} from 'react-bootstrap';
 import { useStoreState } from 'easy-peasy'
 import { useNavigate} from 'react-router-dom'
 
-export const RegistrationScreen = () => {
+export const AdminCreateAuthorScreen = () => {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -18,14 +18,13 @@ export const RegistrationScreen = () => {
 
     const registerHandler = async () => {
         try{
-            await axios.post(`${restHost}/register`, {
+            await axios.put(`${restHost}/authors`, {
                 username: username,
                 password: password,
                 githubUrl: githubUrl,
                 profileImageUrl: profileImageUrl,
             })
             alert("success!")
-            navigate("/Home")
         }
         catch(err){
             console.log(err)
@@ -37,12 +36,11 @@ export const RegistrationScreen = () => {
         <body style={{backgroundColor: "rgb(21,32,43)"}}> 
             <div className="container">
                 <header style={{color: "rgb(255, 122, 0)", fontSize:"200%"}}>
-                    Register with whatever this app is called
                 </header>
                 <div style={{
                     display: "flex", alignItems: "center", color: "rgb(150, 150, 150)",
                     flexDirection: "column" }}>
-                    <p style={{fontWeight: "bold"}}>Register below by entering an ID and password</p>     
+                    <p style={{fontWeight: "bold"}}>Enter at least an ID and a password to create a new author</p>     
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label style={{color: "rgb(150, 150, 150)"}}>Username</Form.Label>
@@ -63,7 +61,7 @@ export const RegistrationScreen = () => {
                         <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00", borderInlineColor: "#ff7a00"}} type="text" placeholder="Image Link"  value={profileImageUrl} onInput={(e) => setProfileImageUrl(e.currentTarget.value)}/>
                     </Form.Group >
                     <Button className="Buttons" variant="primary" type="submit" onClick={registerHandler}>
-                        Register
+                        Create User
                     </Button>
                     {/* <Link to="/Login">
                     </Link> */}
