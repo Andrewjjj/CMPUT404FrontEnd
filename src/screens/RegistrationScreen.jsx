@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import { Link } from 'react-router-dom'
 import {Button, Input, Form} from 'react-bootstrap';
 import { useStoreState } from 'easy-peasy'
 import { useNavigate} from 'react-router-dom'
@@ -62,11 +61,9 @@ export const RegistrationScreen = () => {
                         <Form.Label style={{color: "rgb(150, 150, 150)"}}>Profile Image Link</Form.Label>
                         <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00", borderInlineColor: "#ff7a00"}} type="text" placeholder="Image Link"  value={profileImageUrl} onInput={(e) => setProfileImageUrl(e.currentTarget.value)}/>
                     </Form.Group >
-                    <Button className="Buttons" variant="primary" type="submit" onClick={registerHandler}>
+                    <Button className="Buttons" variant="primary" type="button" onClick={registerHandler}>
                         Register
                     </Button>
-                    {/* <Link to="/Login">
-                    </Link> */}
                    
                     </Form>
                 </div>
